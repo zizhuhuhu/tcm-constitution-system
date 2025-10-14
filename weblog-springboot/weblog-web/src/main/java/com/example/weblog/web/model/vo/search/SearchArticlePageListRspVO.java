@@ -1,0 +1,35 @@
+package com.example.weblog.web.model.vo.search;
+
+import io.swagger.annotations.ApiModel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ApiModel(value = "文章搜索 VO")
+public class SearchArticlePageListRspVO {
+    /**
+     * 文章 ID
+     */
+    private Long id;
+    /**
+     * 封面
+     */
+    private String cover;
+    /**
+     * 标题
+     */
+    private String title;
+    /**
+     * 摘要
+     */
+    private String summary;
+    /**
+     * 发布日期
+     */
+    private String createDate;
+}
