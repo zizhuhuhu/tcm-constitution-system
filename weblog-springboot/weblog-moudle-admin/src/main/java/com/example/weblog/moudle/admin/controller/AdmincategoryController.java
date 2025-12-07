@@ -3,9 +3,12 @@ package com.example.weblog.moudle.admin.controller;
 import com.example.weblog.module.common.aspect.ApiOperationLog;
 import com.example.weblog.module.common.utils.PageResponse;
 import com.example.weblog.module.common.utils.Response;
+import com.example.weblog.moudle.admin.model.vo.artical.FindCategoryDetailReqVO;
+import com.example.weblog.moudle.admin.model.vo.artical.FindCategoryDetailRspVO;
 import com.example.weblog.moudle.admin.model.vo.category.AddCategoryReqVO;
 import com.example.weblog.moudle.admin.model.vo.category.DeleteCategoryReqVO;
 import com.example.weblog.moudle.admin.model.vo.category.FindCategoryPageListReqVO;
+import com.example.weblog.moudle.admin.model.vo.category.UpdateCategoryReqVO;
 import com.example.weblog.moudle.admin.service.AdminCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/admin")
-@Api(tags = "Admin分类模块")
+@Api(tags = "体质测评分类模块")
 public class AdmincategoryController {
     @Autowired
     private AdminCategoryService categoryService;
@@ -50,5 +53,18 @@ public class AdmincategoryController {
     public Response findCategorySelectList(){
         return categoryService.findCategorySelectList();
     }
+    @PostMapping("/category/update")
+    @ApiOperationLog(description = "更新分类")
+    @ApiOperation(value = "更新分类")
+    public Response updateCategory(@RequestBody @Validated UpdateCategoryReqVO updateCategoryReqVO){
+        return categoryService.updateCategory(updateCategoryReqVO);
+    }
+    @PostMapping("/category/detail")
+    @ApiOperationLog(description = "查看分类详情")
+    @ApiOperation(value = "查看分类详情")
+    public Response findCategoryDetail(@RequestBody @Validated FindCategoryDetailReqVO findCategoryDetailReqVO){
+        return categoryService.findCategoryDetail(findCategoryDetailReqVO);
+    }
+
 
 }

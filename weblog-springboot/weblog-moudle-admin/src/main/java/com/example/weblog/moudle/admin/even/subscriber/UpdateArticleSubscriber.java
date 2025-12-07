@@ -3,9 +3,7 @@ import com.example.weblog.module.common.constant.Constants;
 import com.example.weblog.module.common.domain.dos.ArticleContentDO;
 import com.example.weblog.module.common.domain.dos.ArticleDO;
 import com.example.weblog.module.common.domain.mapper.ArticleContentMapper;
-import com.example.weblog.module.common.domain.mapper.ArticleMapper;
-import com.example.weblog.module.common.domain.mapper.StatisticsArticlePVMapper;
-import com.example.weblog.moudle.admin.even.ReadArticleEvent;
+import com.example.weblog.module.common.domain.mapper.ArticalMapper;
 import com.example.weblog.moudle.admin.even.UpdateArticleEvent;
 import com.example.weblog.seacher.LuceneHelper;
 import com.example.weblog.seacher.index.ArticleIndex;
@@ -26,7 +24,7 @@ public class UpdateArticleSubscriber implements ApplicationListener<UpdateArticl
     @Autowired
     private LuceneHelper luceneHelper;
     @Autowired
-    private ArticleMapper articleMapper;
+    private ArticalMapper articalMapper;
     @Autowired
     private ArticleContentMapper articleContentMapper;
 
@@ -43,7 +41,7 @@ public class UpdateArticleSubscriber implements ApplicationListener<UpdateArticl
         log.info("==> 文章更新事件消费成功，articleId: {}", articleId);
 
         // 查询文章数据
-        ArticleDO articleDO = articleMapper.selectById(articleId);
+        ArticleDO articleDO = articalMapper.selectById(articleId);
         ArticleContentDO articleContentDO = articleContentMapper.selectByArticleId(articleId);
 
         // 构建文档

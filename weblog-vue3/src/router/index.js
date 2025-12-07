@@ -9,6 +9,7 @@ import AdminCategoryList from '@/pages/admin/category-list.vue'
 import AdminTagList from '@/pages/admin/tag-list.vue'
 import ArticleDetail from '@/pages/frontend/article-detail.vue'
 import NotFound from '@/pages/frontend/404.vue'
+import AdminQuestionList from '@/pages/admin/question-list.vue'
 //统一在这样声明所有路由
 
 const routes = [
@@ -21,28 +22,28 @@ const routes = [
                 path: '/admin/index',
                 component: AdminIndex,
                 meta: {
-                    title: 'Admin后台首页'
+                    title: '仪表盘'
                 }
             },
             {
                 path: '/admin/artical/list',
                 component: AdminArticalList,
                 meta: {
-                    title: '文章管理'
+                    title: '平台文章管理'
                 }
             },
             {
                 path: '/admin/blog/setting',
                 component: AdminBlogSetting,    
                 meta: {
-                    title: '博客设置'
+                    title: '个人设置'
                 }
             },
             {
                 path: '/admin/category/list',
                 component: AdminCategoryList,   
                 meta: {
-                    title: '分类管理'
+                    title: '体质分类管理'
                 }
             },
             {
@@ -51,6 +52,13 @@ const routes = [
                 meta: {
                     title: '标签管理'
                 }
+            },
+            {
+                path: '/admin/question/list',    
+                component: AdminQuestionList,
+                meta: {
+                    title: '问题管理'
+                }
             }
         ]
     },
@@ -58,21 +66,21 @@ const routes = [
         path: '/', //路由地址
         component: Index, //对应组件
         meta: {
-            title: 'Weblog 首页' //页面标题
+            title: '测评 首页' //页面标题
         }
     },
     {
         path: '/login',
         component: login,
         meta: {
-            title: 'Weblog 登录页'
+            title: '测评 登录页'
         }
     },
     {
         path: '/article/:articleId', //文章详情页
         component: ArticleDetail,
         meta: {
-            title: 'Weblog 详情页'
+            title: '测评 详情页'
         }
     },
     {

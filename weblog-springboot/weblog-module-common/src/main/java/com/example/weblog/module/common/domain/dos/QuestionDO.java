@@ -14,21 +14,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@TableName("t_category")
-public class CategoryDO {
+@TableName("question")
+public class QuestionDO {
     @TableId(type = IdType.AUTO)
     private Long id;
-    private String name;
+    private String title;
     private String description;
-    private String characteristics;
-    private String commonSymptoms;
-    private String psychologicalTraits;
-    private String dietAdvice;
-    private String lifestyleAdvice;
-    private String exerciseAdvice;
-    private String acupointAdvice;
+    private Integer sortOrder;
+    private Integer questionType;
+    private Long constitutionCategoryId;
+    private Integer isRequired;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-    private Boolean isDeleted;
-
+    private Integer deleted;
 }

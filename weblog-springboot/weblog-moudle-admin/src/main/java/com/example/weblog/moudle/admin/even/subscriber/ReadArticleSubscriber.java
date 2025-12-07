@@ -1,7 +1,6 @@
 package com.example.weblog.moudle.admin.even.subscriber;
 
-import com.example.weblog.module.common.domain.dos.ArticleDO;
-import com.example.weblog.module.common.domain.mapper.ArticleMapper;
+import com.example.weblog.module.common.domain.mapper.ArticalMapper;
 import com.example.weblog.module.common.domain.mapper.StatisticsArticlePVMapper;
 import com.example.weblog.moudle.admin.even.ReadArticleEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,7 @@ import java.time.LocalDate;
 @Slf4j
 public class ReadArticleSubscriber implements ApplicationListener<ReadArticleEvent> {
     @Autowired
-    private ArticleMapper articleMapper;
+    private ArticalMapper articalMapper;
     @Autowired
     private StatisticsArticlePVMapper statisticsArticlePVMapper;
     @Override
@@ -28,7 +27,7 @@ public class ReadArticleSubscriber implements ApplicationListener<ReadArticleEve
         String threadName = Thread.currentThread().getName();
         log.info("===> threadName: {}", threadName);
         log.info("===> 文章阅读事件消费成功，articleId: {}", articleId);
-        articleMapper.increaseReadNum(articleId);
+        articalMapper.increaseReadNum(articleId);
         log.info("===> 文章阅读量+1，操作成功，articleId: {}", articleId);
         //当日pv访问量+1
         LocalDate currDate = LocalDate.now();

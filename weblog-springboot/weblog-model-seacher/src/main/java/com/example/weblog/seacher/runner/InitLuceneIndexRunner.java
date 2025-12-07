@@ -6,7 +6,7 @@ import com.example.weblog.module.common.constant.Constants;
 import com.example.weblog.module.common.domain.dos.ArticleContentDO;
 import com.example.weblog.module.common.domain.dos.ArticleDO;
 import com.example.weblog.module.common.domain.mapper.ArticleContentMapper;
-import com.example.weblog.module.common.domain.mapper.ArticleMapper;
+import com.example.weblog.module.common.domain.mapper.ArticalMapper;
 import com.example.weblog.seacher.LuceneHelper;
 import com.example.weblog.seacher.config.LuceneProperties;
 import com.example.weblog.seacher.index.ArticleIndex;
@@ -30,7 +30,7 @@ public class InitLuceneIndexRunner implements CommandLineRunner {
     @Autowired
     private LuceneHelper luceneHelper;
     @Autowired
-    private ArticleMapper articleMapper;
+    private ArticalMapper articalMapper;
     @Autowired
     private ArticleContentMapper articleContentMapper;
 
@@ -39,7 +39,7 @@ public class InitLuceneIndexRunner implements CommandLineRunner {
         log.info("==> 开始初始化 Lucene 索引...");
 
         // 查询所有文章
-        List<ArticleDO> articleDOS = articleMapper.selectList(Wrappers.emptyWrapper());
+        List<ArticleDO> articleDOS = articalMapper.selectList(Wrappers.emptyWrapper());
 
         // 未发布文章，则不创建 lucene 索引
         if (articleDOS.isEmpty()) {

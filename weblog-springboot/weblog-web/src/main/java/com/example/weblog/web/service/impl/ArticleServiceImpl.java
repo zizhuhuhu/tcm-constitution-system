@@ -8,7 +8,6 @@ import com.example.weblog.module.common.enums.ResponseCodeEnum;
 import com.example.weblog.module.common.exception.BizException;
 import com.example.weblog.module.common.utils.PageResponse;
 import com.example.weblog.module.common.utils.Response;
-import com.example.weblog.moudle.admin.convert.ArticleDetailConvert;
 import com.example.weblog.moudle.admin.even.ReadArticleEvent;
 import com.example.weblog.web.convert.ArticleConvert;
 import com.example.weblog.web.markdown.MarkdownHelper;
@@ -33,7 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
-    private ArticleMapper articleMapper;
+    private ArticalMapper articalMapper;
     @Autowired
     private CategoryMapper categoryMapper;
     @Autowired
@@ -53,7 +52,7 @@ public class ArticleServiceImpl implements ArticleService {
         Long current = findIndexArticlePageListReqVO.getCurrent();
         Long size = findIndexArticlePageListReqVO.getSize();
         //第一步，分页查询文章主体记录
-        Page<ArticleDO> articleDOPage = articleMapper.selectPageList(current, size, null, null, null);
+        Page<ArticleDO> articleDOPage = articalMapper.selectPageList(current, size, null, null, null);
         //返回的分页数据
         List<ArticleDO> articleDOS = articleDOPage.getRecords();
         List<FindIndexArticlePageListRspVO> vos = null;
@@ -132,7 +131,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Response findArticleDetail(FindArticleDetailReqVO findArticleDetailReqVO) {
         Long articleId = findArticleDetailReqVO.getArticleId();
 
-        ArticleDO articleDO = articleMapper.selectById(articleId);
+        ArticleDO articleDO = articalMapper.selectById(articleId);
 
         // 判断文章是否存在
         if (Objects.isNull(articleDO)) {
@@ -169,7 +168,7 @@ public class ArticleServiceImpl implements ArticleService {
         vo.setTags(tagVOS);
 
         // 上一篇
-        ArticleDO preArticleDO = articleMapper.selectPreArticle(articleId);
+        ArticleDO preArticleDO = articalMapper.selectPreArticle(articleId);
         if (Objects.nonNull(preArticleDO)) {
             FindPreNextArticleRspVO preArticleVO = FindPreNextArticleRspVO.builder()
                     .articleId(preArticleDO.getId())
@@ -179,7 +178,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         // 下一篇
-        ArticleDO nextArticleDO = articleMapper.selectNextArticle(articleId);
+        ArticleDO nextArticleDO = articalMapper.selectNextArticle(articleId);
         if (Objects.nonNull(nextArticleDO)) {
             FindPreNextArticleRspVO nextArticleVO = FindPreNextArticleRspVO.builder()
                     .articleId(nextArticleDO.getId())

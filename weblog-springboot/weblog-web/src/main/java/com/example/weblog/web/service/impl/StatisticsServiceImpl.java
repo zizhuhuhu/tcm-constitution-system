@@ -3,7 +3,7 @@ package com.example.weblog.web.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.weblog.module.common.domain.dos.ArticleDO;
-import com.example.weblog.module.common.domain.mapper.ArticleMapper;
+import com.example.weblog.module.common.domain.mapper.ArticalMapper;
 import com.example.weblog.module.common.domain.mapper.CategoryMapper;
 import com.example.weblog.module.common.domain.mapper.TagMapper;
 import com.example.weblog.module.common.utils.Response;
@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 public class StatisticsServiceImpl implements StatisticsService {
 @Autowired
-private ArticleMapper articleMapper;
+private ArticalMapper articalMapper;
     @Autowired
     private CategoryMapper categoryMapper;
     @Autowired
@@ -27,7 +27,7 @@ private ArticleMapper articleMapper;
     @Override
     public Response findInfo() {
         // 查询文章总数
-        Long articleTotalCount = articleMapper.selectCount(Wrappers.emptyWrapper());
+        Long articleTotalCount = articalMapper.selectCount(Wrappers.emptyWrapper());
 
         // 查询分类总数
         Long categoryTotalCount = categoryMapper.selectCount(Wrappers.emptyWrapper());
@@ -36,7 +36,7 @@ private ArticleMapper articleMapper;
         Long tagTotalCount = tagMapper.selectCount(Wrappers.emptyWrapper());
 
         // 总浏览量
-        List<ArticleDO> articleDOS = articleMapper.selectAllReadNum();
+        List<ArticleDO> articleDOS = articalMapper.selectAllReadNum();
         Long pvTotalCount = 0L;
         if(!CollectionUtils.isEmpty(articleDOS)) {
             pvTotalCount = articleDOS.stream().mapToLong(ArticleDO::getReadNum).sum();

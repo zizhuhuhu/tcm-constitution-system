@@ -1,6 +1,5 @@
 package com.example.weblog.moudle.admin.even;
 
-import com.example.weblog.module.common.domain.mapper.ArticleMapper;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 @Getter

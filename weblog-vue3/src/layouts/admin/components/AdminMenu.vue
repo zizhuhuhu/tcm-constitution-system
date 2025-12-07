@@ -2,7 +2,7 @@
     <div class="fixed overflow-y-auto bg-slate-800 h-screen text-white menu-container transition-all" :style="{ width: menuStore.menuWidth }">
         <!--顶部Logo,指定高度为64px,和左边的Header头保持一样高-->
         <div class="flex items-center justify-center h-[64px]">
-            <img v-if="menuStore.menuWidth == '250px'" src="@/assets/weblogLogo.jpg" class="h-[60px]">
+            <img v-if="menuStore.menuWidth == '250px'" src="@/assets/中医体质-Logo.png" class="h-[60px]">
             <img v-else src="@/assets/weblog-mini-logo.png" class="h-[60px]">
         </div>
         <!--下方菜单-->
@@ -71,12 +71,17 @@ const menus = [
         'path': '/admin/index'
     },
     {
-        'name': '文章管理',
+        'name': '平台文章管理',
         'icon': 'Document',
         'path': '/admin/artical/list'
     },
     {
-        'name': '分类管理',
+        'name': '测评问题管理',
+        'icon': 'Document',
+        'path': '/admin/question/list'
+    },
+    {
+        'name': '体质分类管理',
         'icon': 'FolderOpened',
         'path': '/admin/category/list',
     },
@@ -86,7 +91,7 @@ const menus = [
         'path': '/admin/tag/list'
     },
     {
-        'name': '博客设置',
+        'name': '个人设置',
         'icon': 'Setting',
         'path': '/admin/blog/setting'
     },

@@ -4,7 +4,7 @@ import com.example.weblog.module.common.constant.Constants;
 import com.example.weblog.module.common.domain.dos.ArticleContentDO;
 import com.example.weblog.module.common.domain.dos.ArticleDO;
 import com.example.weblog.module.common.domain.mapper.ArticleContentMapper;
-import com.example.weblog.module.common.domain.mapper.ArticleMapper;
+import com.example.weblog.module.common.domain.mapper.ArticalMapper;
 import com.example.weblog.moudle.admin.even.PublishArticleEvent;
 import com.example.weblog.seacher.LuceneHelper;
 import com.example.weblog.seacher.index.ArticleIndex;
@@ -24,7 +24,7 @@ public class PublishArticleSubscriber implements ApplicationListener<PublishArti
     @Autowired
     private LuceneHelper luceneHelper;
     @Autowired
-    private ArticleMapper articleMapper;
+    private ArticalMapper articalMapper;
     @Autowired
     private ArticleContentMapper articleContentMapper;
 
@@ -41,7 +41,7 @@ public class PublishArticleSubscriber implements ApplicationListener<PublishArti
         log.info("==> 文章发布事件消费成功，articleId: {}", articleId);
 
         // 搜索新发布的文章
-        ArticleDO articleDO = articleMapper.selectById(articleId);
+        ArticleDO articleDO = articalMapper.selectById(articleId);
         // 这里也将文字正文保存到了文档中，但是检索的时候并没有查询正文，小伙伴们可自行决定是否要将正文，添加到检索字段中
         ArticleContentDO articleContentDO = articleContentMapper.selectByArticleId(articleId);
 

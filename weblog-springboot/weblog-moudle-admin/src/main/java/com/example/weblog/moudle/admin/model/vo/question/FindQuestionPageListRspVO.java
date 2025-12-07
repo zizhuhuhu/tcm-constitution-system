@@ -12,13 +12,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindArticlePageListRspVO {
-    //文章id
+public class FindQuestionPageListRspVO {
+    //问题id
     private Long id;
-    //文章标题
+    //问题题目
     private String title;
-    //文章封面
-    private String cover;
+    //问题类型
+    private String questionType;
+    //问题分类
+    private String constitutionCategoryName;
+    //问题顺序
+    private Integer sortOrder;
     //发布时间
     private LocalDateTime createTime;
 

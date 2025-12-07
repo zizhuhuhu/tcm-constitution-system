@@ -8,14 +8,17 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "添加分类VO")
-public class AddCategoryReqVO {
+@ApiModel(value = "更新分类VO")
+public class UpdateCategoryReqVO {
+    @NotNull(message = "分类id不能为空")
+    private Long id;
     @NotBlank(message = "分类名称不能为空")
     @Length(min = 1, max = 10, message = "分类名称字数限制1~10之间")
     private String name;

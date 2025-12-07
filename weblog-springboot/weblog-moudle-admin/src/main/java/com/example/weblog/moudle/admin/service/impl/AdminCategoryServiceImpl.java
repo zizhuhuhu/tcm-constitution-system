@@ -2,19 +2,21 @@ package com.example.weblog.moudle.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.weblog.module.common.domain.dos.ArticleCategoryRelDO;
-import com.example.weblog.module.common.domain.dos.CategoryDO;
+import com.example.weblog.module.common.domain.dos.*;
 import com.example.weblog.module.common.domain.mapper.ArticleCategoryRelMapper;
 import com.example.weblog.module.common.domain.mapper.CategoryMapper;
+import com.example.weblog.module.common.domain.mapper.QuestionCategoryRelMapper;
 import com.example.weblog.module.common.enums.ResponseCodeEnum;
 import com.example.weblog.module.common.exception.BizException;
 import com.example.weblog.module.common.model.vo.SelectRspVO;
 import com.example.weblog.module.common.utils.PageResponse;
 import com.example.weblog.module.common.utils.Response;
-import com.example.weblog.moudle.admin.model.vo.category.AddCategoryReqVO;
-import com.example.weblog.moudle.admin.model.vo.category.DeleteCategoryReqVO;
-import com.example.weblog.moudle.admin.model.vo.category.FindCategoryPageListReqVO;
-import com.example.weblog.moudle.admin.model.vo.category.FindCategoryPageListRspVO;
+import com.example.weblog.moudle.admin.convert.ArticleDetailConvert;
+import com.example.weblog.moudle.admin.even.UpdateArticleEvent;
+import com.example.weblog.moudle.admin.model.vo.artical.FindArticleDetailRspVO;
+import com.example.weblog.moudle.admin.model.vo.artical.FindCategoryDetailReqVO;
+import com.example.weblog.moudle.admin.model.vo.artical.FindCategoryDetailRspVO;
+import com.example.weblog.moudle.admin.model.vo.category.*;
 import com.example.weblog.moudle.admin.service.AdminCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -33,7 +36,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
     @Autowired
-    private ArticleCategoryRelMapper articleCategoryRelMapper;
+    private QuestionCategoryRelMapper questionCategoryRelMapper;
     //添加分类
     @Override
     public Response addCategory(AddCategoryReqVO addCategoryReqVO) {
@@ -48,6 +51,14 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         //构建DO类
         CategoryDO insertCategoryDO = categoryDO.builder()
                 .name(addCategoryReqVO.getName().trim())
+                .commonSymptoms(addCategoryReqVO.getCommonSymptoms())
+                .characteristics(addCategoryReqVO.getCharacteristics())
+                .description(addCategoryReqVO.getDescription())
+                .psychologicalTraits(addCategoryReqVO.getPsychologicalTraits())
+                .dietAdvice(addCategoryReqVO.getDietAdvice())
+                .lifestyleAdvice(addCategoryReqVO.getLifestyleAdvice())
+                .exerciseAdvice(addCategoryReqVO.getExerciseAdvice())
+                .acupointAdvice(addCategoryReqVO.getAcupointAdvice())
                 .build();
         //执行Insert
         categoryMapper.insert(insertCategoryDO);
@@ -72,6 +83,8 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
                     .map(categoryDO -> FindCategoryPageListRspVO.builder()
                     .id(categoryDO.getId())
                     .name(categoryDO.getName())
+                            .description(categoryDO.getDescription())
+                            .characteristics(categoryDO.getCharacteristics())
                     .createTime(categoryDO.getCreateTime())
                     .build())
                     .collect(Collectors.toList());
@@ -84,10 +97,10 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
     public Response deleteCategory(DeleteCategoryReqVO deleteCategoryReqVO) {
         //分类ID
         Long categoryId = deleteCategoryReqVO.getId();
-        //校验该分类下是否已经有文章，若有，则提示需要先删除分类下所有文章才能删除
-        ArticleCategoryRelDO articleCategoryRelDO = articleCategoryRelMapper.selectOneByCategoryId(categoryId);
-        if(Objects.nonNull(articleCategoryRelDO)) {
-            log.warn("==>此分类下包含文章，无法删除，categoryId:{}", categoryId);
+        //校验该分类下是否已经有题目，若有，则提示需要先删除分类下所有题目才能删除
+        QuestionCategoryRelDO questionCategoryRelDO = questionCategoryRelMapper.selectOneByCategoryId(categoryId);
+        if(Objects.nonNull(questionCategoryRelDO)) {
+            log.warn("==>此分类下包含问题，无法删除，categoryId:{}", categoryId);
             throw new BizException(ResponseCodeEnum.CATEGORY_CAN_NOT_DELETE);
         }
         //删除分类
@@ -115,6 +128,54 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         return Response.success(selectRspVOS);
     }
 
+    @Override
+    public Response updateCategory(UpdateCategoryReqVO updateCategoryReqVO) {
+        Long categoryId = updateCategoryReqVO.getId();
+        //VO转DO,并更新
+        CategoryDO categoryDO = CategoryDO.builder()
+                .id(categoryId)
+                .commonSymptoms(updateCategoryReqVO.getCommonSymptoms())
+                .characteristics(updateCategoryReqVO.getCharacteristics())
+                .description(updateCategoryReqVO.getDescription())
+                .psychologicalTraits(updateCategoryReqVO.getPsychologicalTraits())
+                .dietAdvice(updateCategoryReqVO.getDietAdvice())
+                .lifestyleAdvice(updateCategoryReqVO.getLifestyleAdvice())
+                .exerciseAdvice(updateCategoryReqVO.getExerciseAdvice())
+                .acupointAdvice(updateCategoryReqVO.getAcupointAdvice())
+                .updateTime(LocalDateTime.now())
+                .build();
+        int count = categoryMapper.updateById(categoryDO);
+        //根据更新是否成功，来判断文章是否存在
+        if(count == 0){
+            log.warn("==>该分类不存在，categoryId: {}", categoryId);
+            throw new BizException(ResponseCodeEnum.CATEGORY_NOT_EXISTED);
+        }
+        return Response.success();
+    }
+
+    @Override
+    public Response findCategoryDetail(FindCategoryDetailReqVO findCategoryDetailReqVO) {
+        Long categoryId = findCategoryDetailReqVO.getId();
+        CategoryDO categoryDO = categoryMapper.selectById(categoryId);
+        if(Objects.isNull(categoryDO)) {
+            log.warn("==>查询的分类不存在，categoryId: {}", categoryId);
+            throw new BizException(ResponseCodeEnum.ARTICLE_NOT_FOUND);
+        }
+        FindCategoryDetailRspVO vo = FindCategoryDetailRspVO.builder()
+                .id(categoryDO.getId())
+                .name(categoryDO.getName())
+                .description(categoryDO.getDescription())
+                .characteristics(categoryDO.getCharacteristics())
+                .commonSymptoms(categoryDO.getCommonSymptoms())
+                .psychologicalTraits(categoryDO.getPsychologicalTraits())
+                .dietAdvice(categoryDO.getDietAdvice())
+                .lifestyleAdvice(categoryDO.getLifestyleAdvice())
+                .build();
+        return Response.success(vo);
+
+
+
+    }
 
 
 }

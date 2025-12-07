@@ -13,7 +13,7 @@ import com.example.weblog.moudle.admin.even.DeleteArticleEvent;
 import com.example.weblog.moudle.admin.even.PublishArticleEvent;
 import com.example.weblog.moudle.admin.even.UpdateArticleEvent;
 import com.example.weblog.moudle.admin.model.vo.artical.*;
-import com.example.weblog.moudle.admin.service.AdminArticleService;
+import com.example.weblog.moudle.admin.service.AdminArticalService;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class AdminArticleServiceImpl implements AdminArticleService {
+public class AdminArticalServiceImpl implements AdminArticalService {
     @Autowired
-    private ArticleMapper articleMapper;
+    private ArticalMapper articalMapper;
     @Autowired
     private ArticleContentMapper articleContentMapper;
     @Autowired
@@ -56,7 +56,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
                 .createTime(LocalDateTime.now())
                 .updateTime(LocalDateTime.now())
                 .build();
-        articleMapper.insert(articleDO);
+        articalMapper.insert(articleDO);
         //拿到插入记录的主键ID
         Long articleId = articleDO.getId();
         //VO转ArticleContentDO,并保存
@@ -93,7 +93,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         Long articleId = deleteArticleReqVO.getId();
 
         //删除文章
-        articleMapper.deleteById(articleId);
+        articalMapper.deleteById(articleId);
         //删除文章内容
         articleContentMapper.deleteByArticleId(articleId);
         //删除文章-标签关联记录
@@ -105,22 +105,21 @@ public class AdminArticleServiceImpl implements AdminArticleService {
     }
 
     @Override
-    public Response findArticlePageList(FindArticlePageListReqVO findArticlePageListReqVO) {
-        Long current = findArticlePageListReqVO.getCurrent();
-        Long size = findArticlePageListReqVO.getSize();
-        String title = findArticlePageListReqVO.getTitle();
-        LocalDate startDate = findArticlePageListReqVO.getStartDate();
-        LocalDate endDate = findArticlePageListReqVO.getEndDate();
+    public Response findArticalPageList(FindArticalPageListReqVO findQuestionPageListReqVO) {
+        Long current = findQuestionPageListReqVO.getCurrent();
+        Long size = findQuestionPageListReqVO.getSize();
+        String title = findQuestionPageListReqVO.getTitle();
+        LocalDate startDate = findQuestionPageListReqVO.getStartDate();
+        LocalDate endDate = findQuestionPageListReqVO.getEndDate();
         //执行分页查询
-        Page<ArticleDO> articleDOPage = articleMapper.selectPageList(current, size, title, startDate, endDate);
+        Page<ArticleDO> articleDOPage = articalMapper.selectPageList(current, size, title, startDate, endDate);
         List<ArticleDO> articleDOS = articleDOPage.getRecords();
         //DO转VO
-        List<FindArticlePageListRspVO> vos = null;
+        List<FindArticalPageListRspVO> vos = null;
         if(!CollectionUtils.isEmpty(articleDOS)){
             vos = articleDOS.stream()
-                    .map(articleDO -> FindArticlePageListRspVO.builder()
+                    .map(articleDO -> FindArticalPageListRspVO.builder()
                     .id(articleDO.getId())
-                    .cover(articleDO.getCover())
                     .title(articleDO.getTitle())
                     .createTime(articleDO.getCreateTime()).build())
                     .collect(Collectors.toList());
@@ -133,7 +132,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
     @Override
     public Response findArticleDetail(FindArticleDetailReqVO findArticleDetailReqVO) {
         Long articleId = findArticleDetailReqVO.getId();
-        ArticleDO articleDO = articleMapper.selectById(articleId);
+        ArticleDO articleDO = articalMapper.selectById(articleId);
         if(Objects.isNull(articleDO)) {
             log.warn("==>查询的文章不存在，articleId: {}", articleId);
             throw new BizException(ResponseCodeEnum.ARTICLE_NOT_FOUND);
@@ -167,7 +166,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
                 .summary(updateArticleReqVO.getSummary())
                 .updateTime(LocalDateTime.now())
                 .build();
-        int count = articleMapper.updateById(articleDO);
+        int count = articalMapper.updateById(articleDO);
         //根据更新是否成功，来判断文章是否存在
         if(count == 0){
             log.warn("==>该文章不存在，articleId: {}", articleId);

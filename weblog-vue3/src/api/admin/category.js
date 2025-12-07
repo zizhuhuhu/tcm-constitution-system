@@ -16,3 +16,11 @@ export function deleteCategory(id) {
 export function getCategorySelectList() {
     return instance.post("/admin/category/select/list")
 }
+//更新分类
+export function updateCategory(data) {
+    return instance.post("/admin/category/update", data)
+}
+//获取分类详情
+export function getCategoryDetail(id) {
+    return instance.post("/admin/category/detail", {id})
+}

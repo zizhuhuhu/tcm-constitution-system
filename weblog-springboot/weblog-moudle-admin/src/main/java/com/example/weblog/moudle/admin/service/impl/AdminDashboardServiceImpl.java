@@ -6,7 +6,7 @@ import com.example.weblog.module.common.constant.Constants;
 import com.example.weblog.module.common.domain.dos.ArticleDO;
 import com.example.weblog.module.common.domain.dos.ArticlePublishCountDO;
 import com.example.weblog.module.common.domain.dos.StatisticsArticlePVDO;
-import com.example.weblog.module.common.domain.mapper.ArticleMapper;
+import com.example.weblog.module.common.domain.mapper.ArticalMapper;
 import com.example.weblog.module.common.domain.mapper.CategoryMapper;
 import com.example.weblog.module.common.domain.mapper.StatisticsArticlePVMapper;
 import com.example.weblog.module.common.domain.mapper.TagMapper;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AdminDashboardServiceImpl implements AdminDashboardService {
     @Autowired
-    private ArticleMapper articleMapper;
+    private ArticalMapper articalMapper;
     @Autowired
     private CategoryMapper categoryMapper;
     @Autowired
@@ -41,13 +41,13 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
     @Override
     public Response findDashboardStatistics() {
         //查询文章总数
-        Long articleTotalCount = articleMapper.selectCount(Wrappers.emptyWrapper());
+        Long articleTotalCount = articalMapper.selectCount(Wrappers.emptyWrapper());
         //查询分类总数
         Long categoryTotalCount = categoryMapper.selectCount(Wrappers.emptyWrapper());
         //查询标签总数
         Long tagTotalCount = tagMapper.selectCount(Wrappers.emptyWrapper());
         //总浏览量
-        List<ArticleDO> articleDOS = articleMapper.selectAllReadNum();
+        List<ArticleDO> articleDOS = articalMapper.selectAllReadNum();
         Long pvTotalCount = 0L;
         if(!CollectionUtils.isEmpty(articleDOS)) {
             //所有read_num相加
@@ -70,7 +70,7 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
         //当前日期倒退一年的日期
         LocalDate startDate = currDate.minusYears(1);
         //查找这一年内，每日发布的文章数量
-        List<ArticlePublishCountDO> articlePublishCountDOS = articleMapper.selectDateArticlePublishCount(startDate, currDate);
+        List<ArticlePublishCountDO> articlePublishCountDOS = articalMapper.selectDateArticlePublishCount(startDate, currDate);
         Map<LocalDate, Long> map = null;
         if(!CollectionUtils.isEmpty(articlePublishCountDOS)) {
             //DO转Map

@@ -3,10 +3,10 @@
     <div class="col-span-2 order-2 p-10 md:col-span-1 md:order-1 bg-black">
         <!--flex-col用于指定子元素垂直排列-->
         <div class="flex justify-center items-center h-full flex-col animate__animated animate__bounceInDown">
-            <h2 class="font-bold text-4xl mb-7 text-white">Weblog 博客登录</h2>
-            <p class="text-white">一款由Spring Boot + Mybatis Plus + Vue 3.2 + Vite 4 开发的前后端分离博客。</p>
+            <h2 class="font-bold text-4xl mb-7 text-white">tcm constitution system</h2>
+            <p class="text-white mb-5">中医健康体制监测平台</p>
             <!--指定图片宽度为父级元素的1/2-->
-            <img src="@/assets/developer.png" class="w-1/2">
+            <img src="@/assets/中医体质.png" class="w-1/2">
         </div>
     </div>
     <div class="col-span-2 order-1 md:col-span-1 md:order-2 bg-white">

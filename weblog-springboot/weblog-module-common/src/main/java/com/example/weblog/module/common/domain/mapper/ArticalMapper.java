@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public interface ArticleMapper extends BaseMapper<ArticleDO> {
+public interface ArticalMapper extends BaseMapper<ArticleDO> {
 
     /**
      * 分页查询

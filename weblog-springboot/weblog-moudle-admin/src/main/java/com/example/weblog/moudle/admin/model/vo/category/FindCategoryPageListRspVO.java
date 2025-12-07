@@ -18,6 +18,10 @@ public class FindCategoryPageListRspVO {
     private Long id;
     //分类名称
     private String name;
+    //分类描述
+    private String description;
+    //分类特征
+    private String characteristics;
     //创建时间
     private LocalDateTime createTime;
 }

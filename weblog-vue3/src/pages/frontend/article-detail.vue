@@ -203,6 +203,60 @@ onMounted(() => {
 
 </script>
 <style scoped>
+/* 修复代码块溢出问题 - 添加到你的现有CSS中 */
+::v-deep(pre) {
+    margin-bottom: 20px;
+    background: #2d2d2d !important;
+    border-radius: 8px;
+    padding: 0 !important;
+    position: relative;
+    overflow-x: auto !important; /* 关键：解决横向溢出 */
+    border: 1px solid #444;
+}
+
+::v-deep(pre code) {
+    display: block;
+    padding: 1.5rem 1.25rem !important;
+    color: #f8f8f2;
+    background: transparent !important;
+    font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre !important;
+    word-wrap: normal !important;
+}
+
+/* 确保代码块有正确的滚动条 */
+::v-deep(pre::-webkit-scrollbar) {
+    height: 8px;
+}
+
+::v-deep(pre::-webkit-scrollbar-track) {
+    background: #1e1e1e;
+    border-radius: 0 0 4px 4px;
+}
+
+::v-deep(pre::-webkit-scrollbar-thumb) {
+    background: #555;
+    border-radius: 4px;
+}
+
+::v-deep(pre::-webkit-scrollbar-thumb:hover) {
+    background: #777;
+}
+
+/* 修复行内代码样式 */
+::v-deep(.article-content code:not(pre code)) {
+    padding: 2px 6px;
+    margin: 0 2px;
+    font-size: 0.9em !important;
+    border-radius: 4px;
+    color: #e74c3c;
+    background-color: #f1f3f4;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    border: 1px solid #e1e4e8;
+}
 /* h1, h2, h3, h4, h5, h6 标题样式 */
 ::v-deep(.article-content h1,
 .article-content h2,

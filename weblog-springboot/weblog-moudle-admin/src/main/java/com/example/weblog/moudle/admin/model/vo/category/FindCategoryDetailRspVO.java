@@ -1,22 +1,22 @@
-package com.example.weblog.module.common.domain.dos;
+package com.example.weblog.moudle.admin.model.vo.artical;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@TableName("t_category")
-public class CategoryDO {
-    @TableId(type = IdType.AUTO)
+@ApiModel(value = "查询分类详情出参")
+public class FindCategoryDetailRspVO {
+    //分类id
     private Long id;
     private String name;
     private String description;
@@ -27,8 +27,4 @@ public class CategoryDO {
     private String lifestyleAdvice;
     private String exerciseAdvice;
     private String acupointAdvice;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
-    private Boolean isDeleted;
-
 }
